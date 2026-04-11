@@ -108,13 +108,16 @@ const ParamPatchItem: FC<{ paramName: ParamName, patch: ParamPatch; patchIndex: 
             <DropdownItem
               label={patch.label}
               rgOptions={patch.args.map((x: any, i: number) => {
-                return { data: i, label: x };
+                const displayLabel = typeof x === 'string' && x.includes('/')
+                  ? x.split('/').pop()?.replace(/\.(ttf|otf|TTF|OTF)$/i, '') ?? x
+                  : x;
+                return { data: i, label: displayLabel };
               })}
               selectedOption={selectedIndex}
               bottomSeparator={"none"}
               onChange={(index) => {
                 setSelectedIndex(index.data);
-                updateSettingsValue(index.label);
+                updateSettingsValue(patch.args[index.data]);
               }}
             />
             </Focusable>

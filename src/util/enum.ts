@@ -43,7 +43,13 @@ export enum ParamName {
   refresh_rate = "refresh_rate",
   no_display = "no_display",
   horizontal = "horizontal",
+  horizontal_stretch = "horizontal_stretch",
+  horizontal_separator = "horizontal_separator",
   hud_no_margin = "hud_no_margin",
+  hud_compact = "hud_compact",
+  round_corners = "round_corners",
+  cellpadding_y = "cellpadding_y",
+  cellpadding_x = "cellpadding_x",
   table_columns = "table_columns",
   arch="arch",
   gpu_name="gpu_name",
@@ -53,6 +59,7 @@ export enum ParamName {
   frame_count = "frame_count",
   full = "full",
   font_scale = "font_scale",
+  font_file = "font_file",
   //no_small_font="no_small_font",
   custom_text_center = "custom_text_center",
   custom_text = "custom_text",
@@ -94,7 +101,8 @@ export enum ParamName {
   io_color = "io_color",
   background_color = "background_color",
   battery_color = "battery_color",
-  frametime_color = "frametime_color"
+  frametime_color = "frametime_color",
+  horizontal_separator_color = "horizontal_separator_color"
 }
 
 export enum ParamGroup{

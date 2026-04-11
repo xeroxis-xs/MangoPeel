@@ -43,6 +43,28 @@ export const paramList:{ [paramName: string]: ParamData }={
       },
       patchs:[]
   },
+  [ParamName.horizontal_separator]:{
+      name:ParamName.horizontal_separator,
+      group:ParamGroup.LAYOUT,
+      preCondition:[{disable:[ParamName.no_display,ParamName.preset]},{enable:[ParamName.horizontal]}],
+      toggle:{
+          label:localizeStrEnum.HORIZONTAL_SEPARATOR_LABEL,
+          description:localizeStrEnum.HORIZONTAL_SEPARATOR_DESCRIPTION,
+          defaultEnable:true,
+      },
+      patchs:[]
+  },
+  [ParamName.horizontal_stretch]:{
+      name:ParamName.horizontal_stretch,
+      group:ParamGroup.LAYOUT,
+      preCondition:[{disable:[ParamName.no_display,ParamName.preset]},{enable:[ParamName.horizontal]}],
+      toggle:{
+          label:localizeStrEnum.HORIZONTAL_STRETCH_LABEL,
+          description:localizeStrEnum.HORIZONTAL_STRETCH_DESCRIPTION,
+          defaultEnable:true,
+      },
+      patchs:[]
+  },
   [ParamName.table_columns]:{
       name:ParamName.table_columns,
       group:ParamGroup.LAYOUT,
@@ -84,7 +106,7 @@ export const paramList:{ [paramName: string]: ParamData }={
       },
       patchs:[{
           type:ParamPatchType.dropdown,
-          args:["top-left","top-center","top-right","middle-left","middle-right","bottom-left","bottom_center","bottom-right"],
+          args:["top-left","top-center","top-right","middle-left","middle-right","bottom-left","bottom-center","bottom-right"],
           defaultValue:"top-left"
       }]
   },
@@ -98,6 +120,62 @@ export const paramList:{ [paramName: string]: ParamData }={
           defaultEnable:false,
       },
       patchs:[]
+  },
+  [ParamName.hud_compact]:{
+      name:ParamName.hud_compact,
+      group:ParamGroup.LAYOUT,
+      preCondition:[{disable:[ParamName.no_display,ParamName.preset]}],
+      toggle:{
+          label:localizeStrEnum.HUD_COMPACT_LABEL,
+          description:localizeStrEnum.HUD_COMPACT_DESCRIPTION,
+          defaultEnable:false,
+      },
+      patchs:[]
+  },
+  [ParamName.round_corners]:{
+      name:ParamName.round_corners,
+      group:ParamGroup.LAYOUT,
+      preCondition:[{disable:[ParamName.no_display,ParamName.preset]}],
+      toggle:{
+          label:localizeStrEnum.ROUND_CORNERS_LABEL,
+          description:localizeStrEnum.ROUND_CORNERS_DESCRIPTION,
+          defaultEnable:false,
+      },
+      patchs:[{
+          type:ParamPatchType.slider,
+          args:[0,20,1],
+          defaultValue:8,
+      }]
+  },
+  [ParamName.cellpadding_y]:{
+      name:ParamName.cellpadding_y,
+      group:ParamGroup.LAYOUT,
+      preCondition:[{disable:[ParamName.no_display,ParamName.preset]}],
+      toggle:{
+          label:localizeStrEnum.CELLPADDING_Y_LABEL,
+          description:localizeStrEnum.CELLPADDING_Y_DESCRIPTION,
+          defaultEnable:false,
+      },
+      patchs:[{
+          type:ParamPatchType.slider,
+          args:[-0.5,0.5,0.01],
+          defaultValue:-0.085,
+      }]
+  },
+  [ParamName.cellpadding_x]:{
+      name:ParamName.cellpadding_x,
+      group:ParamGroup.LAYOUT,
+      preCondition:[{disable:[ParamName.no_display,ParamName.preset]}],
+      toggle:{
+          label:localizeStrEnum.CELLPADDING_X_LABEL,
+          description:localizeStrEnum.CELLPADDING_X_DESCRIPTION,
+          defaultEnable:false,
+      },
+      patchs:[{
+          type:ParamPatchType.slider,
+          args:[0,20,1],
+          defaultValue:4,
+      }]
   },
 
   [ParamName.offset_x]:{
@@ -227,6 +305,52 @@ export const paramList:{ [paramName: string]: ParamData }={
     }]
   },
       
+  [ParamName.font_file]:{
+      name:ParamName.font_file,
+      group:ParamGroup.FONT,
+      preCondition:[{disable:[ParamName.no_display,ParamName.preset]}],
+      toggle:{
+          label: localizeStrEnum.FONT_FILE_LABEL,
+          description: localizeStrEnum.FONT_FILE_DESCRIPTION,
+          defaultEnable:false,
+      },
+      patchs:[{
+          type:ParamPatchType.dropdown,
+          args:[
+              "/usr/share/fonts/abattis-cantarell-fonts/Cantarell-Bold.otf",
+              "/usr/share/fonts/abattis-cantarell-fonts/Cantarell-ExtraBold.otf",
+              "/usr/share/fonts/abattis-cantarell-fonts/Cantarell-Light.otf",
+              "/usr/share/fonts/abattis-cantarell-fonts/Cantarell-Regular.otf",
+              "/usr/share/fonts/abattis-cantarell-fonts/Cantarell-Thin.otf",
+              "/usr/share/fonts/abattis-cantarell-vf-fonts/Cantarell-VF.otf",
+              "/usr/share/fonts/adwaita-mono-fonts/AdwaitaMono-Bold.ttf",
+              "/usr/share/fonts/adwaita-mono-fonts/AdwaitaMono-BoldItalic.ttf",
+              "/usr/share/fonts/adwaita-mono-fonts/AdwaitaMono-Italic.ttf",
+              "/usr/share/fonts/adwaita-mono-fonts/AdwaitaMono-Regular.ttf",
+              "/usr/share/fonts/adwaita-sans-fonts/AdwaitaSans-Italic.ttf",
+              "/usr/share/fonts/adwaita-sans-fonts/AdwaitaSans-Regular.ttf",
+              "/usr/share/fonts/dejavu-sans-fonts/DejaVuSans-Bold.ttf",
+              "/usr/share/fonts/dejavu-sans-fonts/DejaVuSans-BoldOblique.ttf",
+              "/usr/share/fonts/dejavu-sans-fonts/DejaVuSans-ExtraLight.ttf",
+              "/usr/share/fonts/dejavu-sans-fonts/DejaVuSans-Oblique.ttf",
+              "/usr/share/fonts/dejavu-sans-fonts/DejaVuSans.ttf",
+              "/usr/share/fonts/dejavu-sans-fonts/DejaVuSansCondensed-Bold.ttf",
+              "/usr/share/fonts/dejavu-sans-fonts/DejaVuSansCondensed-BoldOblique.ttf",
+              "/usr/share/fonts/dejavu-sans-fonts/DejaVuSansCondensed-Oblique.ttf",
+              "/usr/share/fonts/dejavu-sans-fonts/DejaVuSansCondensed.ttf",
+              "/usr/share/fonts/fira-code/FiraCode-Bold.ttf",
+              "/usr/share/fonts/fira-code/FiraCode-Light.ttf",
+              "/usr/share/fonts/fira-code/FiraCode-Medium.ttf",
+              "/usr/share/fonts/fira-code/FiraCode-Regular.ttf",
+              "/usr/share/fonts/fira-code/FiraCode-Retina.ttf",
+              "/usr/share/fonts/fira-code/FiraCode-SemiBold.ttf",
+              "/usr/share/fonts/gdouros-symbola/Symbola.ttf",
+              "/usr/share/fonts/google-droid-sans-fonts/DroidKufi-Bold.ttf",
+              "/usr/share/fonts/google-droid-sans-fonts/DroidKufi-Regular.ttf",
+          ],
+          defaultValue:"/usr/share/fonts/dejavu-sans-fonts/DejaVuSans.ttf",
+      }]
+  },
   [ParamName.font_scale]:{
       name:ParamName.font_scale,
       group:ParamGroup.FONT,
@@ -720,7 +844,7 @@ export const paramList:{ [paramName: string]: ParamData }={
     toggle: {
       label: localizeStrEnum.BATTERY_TIME_LABEL,
       description: localizeStrEnum.BATTERY_TIME_DESCRIPTION,
-      defaultEnable: false,
+      defaultEnable: true,
     },
     patchs: []
   },
@@ -1237,6 +1361,21 @@ export const paramList:{ [paramName: string]: ParamData }={
         defaultValue:"020202",
     }]
   },
+  [ParamName.horizontal_separator_color]:{
+    name:ParamName.horizontal_separator_color,
+    group:ParamGroup.COLOR,
+    preCondition:[{disable:[ParamName.no_display,ParamName.preset]},{enable:[ParamName.horizontal]}],
+    toggle:{
+        label:localizeStrEnum.HORIZONTAL_SEPARATOR_COLOR_LABEL,
+        description:localizeStrEnum.HORIZONTAL_SEPARATOR_COLOR_DESCRIPTION,
+        defaultEnable:false,
+    },
+    patchs:[{
+        type:ParamPatchType.colorPicker,
+        args:[],
+        defaultValue:"AD64C1",
+    }]
+  },
 
   [ParamName.frametime_color]:{
     name:ParamName.frametime_color,
@@ -1553,20 +1692,32 @@ export const steamParamDefalut:{[paramName:string]:SteamParamDefalut}[] = [
     [ParamName.preset]:{enable:true,values:[2]},
     [ParamName.table_columns]:{enable:true,values:[20]},
     [ParamName.horizontal]:{enable:true},
+    [ParamName.horizontal_stretch]:{enable:false},
+    [ParamName.horizontal_separator]:{enable:false},
+    [ParamName.hud_compact]:{enable:true},
+    [ParamName.hud_no_margin]:{enable:true},
+    [ParamName.round_corners]:{enable:true,values:[20]},
+    [ParamName.position]:{enable:true,values:["top-center"]},
+    [ParamName.font_scale]:{enable:true,values:[0.8]},
     [ParamName.legacy_layout]:{enable:false},
     [ParamName.fps]:{enable:true,order:1},
-    [ParamName.frame_timing]:{enable:true,order:2},
+    [ParamName.frame_timing]:{enable:false,order:2},
     [ParamName.frametime]:{enable:false},
     [ParamName.cpu_stats]:{enable:true,order:3},
     [ParamName.gpu_stats]:{enable:true,order:4},
+    [ParamName.gpu_temp]:{enable:true},
     [ParamName.ram]:{enable:true,order:5},
     [ParamName.vram]:{enable:true,order:6},
     [ParamName.battery]:{enable:true,order:7},
-    [ParamName.hud_no_margin]:{enable:true},
     [ParamName.cpu_power]:{enable:true},
     [ParamName.gpu_power]:{enable:true},
-    [ParamName.battery_time]:{enable:true},
     [ParamName.battery_watt]:{enable:true},
+    [ParamName.battery_time]:{enable:true},
+    [ParamName.text_outline_thickness]:{enable:false},
+    [ParamName.cellpadding_y]:{enable:true,values:[0.4]},
+    [ParamName.cellpadding_x]:{enable:true,values:[12]},
+    [ParamName.offset_y]:{enable:true,values:[6]},
+    [ParamName.font_file]:{enable:true,values:["/usr/share/fonts/dejavu-sans-fonts/DejaVuSans.ttf"]},
   },
   {
     [ParamName.preset]:{enable:true,values:[3]},
