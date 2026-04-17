@@ -1705,7 +1705,7 @@ export const steamParamDefalut:{[paramName:string]:SteamParamDefalut}[] = [
     [ParamName.frametime]:{enable:false},
   },
   {
-    [ParamName.preset]:{enable:true,values:[2]},
+    [ParamName.preset]:{enable:false,values:[2]},
     [ParamName.table_columns]:{enable:true,values:[20]},
     [ParamName.horizontal]:{enable:true},
     [ParamName.horizontal_stretch]:{enable:false},

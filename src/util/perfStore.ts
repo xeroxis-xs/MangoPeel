@@ -95,7 +95,7 @@ export class prefStore{
             count++;
             if(!this.perfStore||!this.perfStore?.SetPerfOverlayLevel){
                 result=false;
-                sleep(100);
+                await sleep(100);
                 continue;
             }
             var target=0;
@@ -118,17 +118,13 @@ export class prefStore{
                 default:
                     return false;
             }
-            //this.disableCallBack++;
-            //setTimeout(()=>{
-            //    this.disableCallBack--;
-            //},1000)
             try{
                 this.perfStore?.SetPerfOverlayLevel(target);
                 result=true;
                 break;
             }catch{
                 result=false;
-                sleep(100);
+                await sleep(100);
                 continue;
             }
         }
