@@ -258,8 +258,81 @@ sudo systemctl restart plugin_loader.service
 
 ---
 
+## After a Bazzite OS Update
+
+Bazzite OS updates (`rpm-ostree upgrade`) replace `/usr/bin/mangoapp` with the stock version. However:
+
+- **MangoHud**: The `mangohud-custom.service` systemd service automatically restores your custom binary on every boot. **No action needed.** Just reboot after the update and verify:
+  ```bash
+  sudo systemctl status mangohud-custom.service
+  ls -la /usr/bin/mangoapp /var/lib/mangohud-custom/mangoapp  # sizes should match
+  ```
+
+- **MangoPeel**: Lives in `~/homebrew/plugins/MangoPeel/` which is in your home directory. **OS updates don't touch it.** Your `index.js`, `main.py`, and saved settings (`~/homebrew/settings/MangoPeel/config.json`) all persist.
+
+If something looks wrong after an OS update (e.g. stock HUD appears), run this on Bazzite to manually re-apply:
+
+```bash
+sudo ostree admin unlock 2>/dev/null || true
+sudo killall mangoapp
+sudo cp /var/lib/mangohud-custom/mangoapp /usr/bin/mangoapp
+# mangoapp auto-restarts via gamescope
+```
+
+### If you need to update the custom binary
+
+Only necessary if upstream MangoHud changes break compatibility with your custom build. From your Windows machine in WSL:
+
+```bash
+wsl
+cd ~/MangoHud
+git fetch origin
+git merge origin/master
+
+# Re-apply your custom branch changes
+git checkout custom-hud
+git rebase master
+
+# Rebuild
+ninja -C build/meson64
+strip build/meson64/src/mangoapp
+
+# Deploy
+scp build/meson64/src/mangoapp xeroxis@BAZZITE_IP:~/mangoapp
+```
+
+Then on Bazzite:
+```bash
+sudo killall mangoapp
+sudo cp ~/mangoapp /usr/bin/mangoapp
+sudo cp ~/mangoapp /var/lib/mangohud-custom/mangoapp
+```
+
+---
+
+## Can I Build Directly on Bazzite?
+
+**MangoPeel (TypeScript):** Yes, but requires installing Node.js:
+```bash
+# Install Node.js via distrobox (recommended for immutable OS)
+distrobox create --name dev --image fedora:latest
+distrobox enter dev
+sudo dnf install -y nodejs npm
+npm install -g pnpm
+cd ~/MangoPeel  # clone your fork here
+pnpm install && pnpm run build
+cp dist/index.js ~/homebrew/plugins/MangoPeel/dist/index.js
+```
+
+**MangoHud (C++):** Not practical on Bazzite. The build requires ~2GB of development libraries (`meson`, `ninja`, `glslang-tools`, X11 headers, etc.) that can't be permanently installed on the immutable `/usr` filesystem. Use WSL2 or a Linux VM instead.
+
+---
+
 ## Verifying Changes
 
-- **MangoHud version**: Check binary size matches your build: `ls -la /usr/bin/mangoapp`
-- **MangoPeel version**: In Decky > MangoPeel, changes should be visible in the UI
-- **Logs**: `cat /tmp/MangoPeel.log` on Bazzite for plugin debug output
+- **MangoHud binary**: `ls -la /usr/bin/mangoapp /var/lib/mangohud-custom/mangoapp` (sizes should match)
+- **MangoHud service**: `sudo systemctl status mangohud-custom.service` (should show `active (exited)`)
+- **MangoPeel config**: `cat /tmp/mangohud.*` (should show your custom params, not `preset=2`)
+- **MangoPeel settings**: `cat ~/homebrew/settings/MangoPeel/config.json | head -5` (should exist with data)
+- **MangoPeel logs**: `cat /tmp/MangoPeel.log` for debug output
+- **MangoPeel UI**: In Game Mode, Decky > MangoPeel should show your custom parameters
