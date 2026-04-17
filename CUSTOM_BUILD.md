@@ -134,51 +134,54 @@ After a system update (`rpm-ostree upgrade`), the stock binary gets restored on 
 
 ## Building MangoPeel (Decky Plugin)
 
-MangoPeel is a TypeScript/React project built on Windows.
+MangoPeel is a TypeScript/React project. Build uses WSL since `build.sh` requires bash.
 
-### First-time setup
+### First-time setup (in WSL2)
 
 ```bash
-# In PowerShell or terminal, from the MangoPeel directory
-cd C:\Users\cheryl\GitHub\MangoPeel
+wsl
+
+# Install Node.js and pnpm if not already installed
+sudo apt update
+sudo apt install -y nodejs npm
 npm install -g pnpm
+
+# Navigate to MangoPeel on Windows filesystem
+cd /mnt/c/Users/cheryl/GitHub/MangoPeel
 pnpm install
 ```
 
 ### Build
 
 ```bash
-cd C:\Users\cheryl\GitHub\MangoPeel
+wsl
+cd /mnt/c/Users/cheryl/GitHub/MangoPeel
+
+# Build the plugin (compiles all TypeScript/React into a single dist/index.js)
 pnpm run build
-```
 
-The built plugin output is in the `dist/` folder. To create a deployable zip:
-
-```bash
-# Using Git Bash or WSL
-cd /c/Users/cheryl/GitHub/MangoPeel   # Git Bash
-# OR
-cd /mnt/c/Users/cheryl/GitHub/MangoPeel   # WSL
-
+# Optional: create deployable tar.gz for Decky zip install
 bash build.sh
 ```
 
-This creates `MangoPeel.tar.gz` containing everything needed.
+`pnpm run build` compiles all source files (`config_main.ts`, `perfStore.ts`, `pluginMain.ts`, `ParamItem.tsx`, etc.) into a single **`dist/index.js`** bundle. That is the only file the plugin loads at runtime.
 
 ### Deploy MangoPeel to Bazzite
 
-**Option A: Via Decky Developer Mode (recommended)**
+**Option A: Via Decky Developer Mode (recommended for first install)**
 
 1. In Game Mode, open Decky Loader settings
 2. Enable **Developer Mode**
 3. Go to the Decky menu > Developer > Install Plugin from ZIP
 4. Transfer `MangoPeel.tar.gz` to Bazzite and select it
 
-**Option B: Manual file copy**
+**Option B: Manual file copy (fastest for iterating)**
+
+Only one file needs to be copied -- the compiled `dist/index.js`:
 
 ```bash
-# Copy the built index.js to Bazzite
-scp dist/index.js xeroxis@BAZZITE_IP:~/index.js
+# From WSL, copy to Bazzite via SCP (replace BAZZITE_IP)
+scp /mnt/c/Users/cheryl/GitHub/MangoPeel/dist/index.js xeroxis@BAZZITE_IP:~/index.js
 ```
 
 Then on Bazzite:
@@ -193,32 +196,55 @@ sudo systemctl restart plugin_loader.service
 
 ---
 
+## What Files to Copy: Summary
+
+| Project | You edit (on Windows) | You build (in WSL) | You deploy to Bazzite |
+|---|---|---|---|
+| **MangoHud** | `src/*.cpp`, `src/*.h` | `~/MangoHud/build/meson64/src/mangoapp` | `/usr/bin/mangoapp` |
+| **MangoPeel** | `src/**/*.ts`, `src/**/*.tsx` | `dist/index.js` | `~/homebrew/plugins/MangoPeel/dist/index.js` |
+
+- **MangoHud**: 6 source files in, 1 binary out (`mangoapp`)
+- **MangoPeel**: All TypeScript/React compiles into 1 file (`dist/index.js`)
+
+---
+
 ## Quick Reference: Full Rebuild & Deploy
 
-After making changes to both repos:
+All steps run in WSL. Replace `BAZZITE_IP` with your device's IP address.
 
 ```bash
-# 1. Build MangoHud in WSL
-wsl -e bash -c "
-  cp /mnt/c/Users/cheryl/GitHub/Mangohud/src/*.cpp ~/MangoHud/src/ && \
-  cp /mnt/c/Users/cheryl/GitHub/Mangohud/src/*.h ~/MangoHud/src/ && \
-  cd ~/MangoHud && \
-  ninja -C build/meson64 && \
-  strip build/meson64/src/mangoapp && \
-  scp build/meson64/src/mangoapp xeroxis@BAZZITE_IP:~/mangoapp
-"
+wsl
 
-# 2. Build MangoPeel on Windows
-cd C:\Users\cheryl\GitHub\MangoPeel
+# --- MangoHud ---
+# Copy source files from Windows into WSL build tree
+cp /mnt/c/Users/cheryl/GitHub/Mangohud/src/overlay.cpp ~/MangoHud/src/
+cp /mnt/c/Users/cheryl/GitHub/Mangohud/src/overlay.h ~/MangoHud/src/
+cp /mnt/c/Users/cheryl/GitHub/Mangohud/src/hud_elements.cpp ~/MangoHud/src/
+cp /mnt/c/Users/cheryl/GitHub/Mangohud/src/gpu.cpp ~/MangoHud/src/
+cp /mnt/c/Users/cheryl/GitHub/Mangohud/src/overlay_params.h ~/MangoHud/src/
+cp /mnt/c/Users/cheryl/GitHub/Mangohud/src/overlay_params.cpp ~/MangoHud/src/
+
+# Build and strip
+cd ~/MangoHud
+ninja -C build/meson64
+strip build/meson64/src/mangoapp
+
+# Send to Bazzite
+scp build/meson64/src/mangoapp xeroxis@BAZZITE_IP:~/mangoapp
+
+# --- MangoPeel ---
+cd /mnt/c/Users/cheryl/GitHub/MangoPeel
 pnpm run build
 
-# 3. Copy MangoPeel to Bazzite
+# Send to Bazzite
 scp dist/index.js xeroxis@BAZZITE_IP:~/index.js
 ```
 
-Then on Bazzite:
+Then SSH into Bazzite and apply:
 
 ```bash
+ssh xeroxis@BAZZITE_IP
+
 # Apply MangoHud
 sudo ostree admin unlock 2>/dev/null || true
 sudo cp ~/mangoapp /usr/bin/mangoapp
