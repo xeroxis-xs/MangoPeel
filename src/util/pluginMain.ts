@@ -3,7 +3,6 @@ import { LocalizationManager } from "../i18n/localization";
 import { Settings } from "./settings";
 import { Config } from "./config";
 import { prefStore } from "./perfStore";
-import { sleep } from "@decky/ui";
 
 
 
