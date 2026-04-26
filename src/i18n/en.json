@@ -193,5 +193,21 @@
     "REFRESH_RATE_DESCRIPTION" : "Display the current refresh rate",
     "GPU_VOLTAGE_LABEL" : "GPU Voltage",
     "GPU_VOLTAGE_DESCRIPTION" : "Display the voltage of the GPU",
-    "RESET_ALL_PARAM_DEFAULT":"Reset all configurations"
+    "RESET_ALL_PARAM_DEFAULT":"Reset all configurations",
+    "FONT_FILE_LABEL": "Font File",
+    "FONT_FILE_DESCRIPTION": "Path to a TTF/OTF font file (e.g. /usr/share/fonts/fira-code/FiraCode-Regular.ttf)",
+    "HORIZONTAL_SEPARATOR_LABEL": "Horizontal Separator",
+    "HORIZONTAL_SEPARATOR_DESCRIPTION": "Show the pipe separator between items in horizontal mode",
+    "HORIZONTAL_STRETCH_LABEL": "Horizontal Stretch",
+    "HORIZONTAL_STRETCH_DESCRIPTION": "Stretch the HUD background to full screen width. When off, the background wraps to content width.",
+    "HUD_COMPACT_LABEL": "Compact HUD",
+    "HUD_COMPACT_DESCRIPTION": "Display compact version of MangoHud, removes labels and padding",
+    "ROUND_CORNERS_LABEL": "Rounded Corners",
+    "ROUND_CORNERS_DESCRIPTION": "Radius for rounded corners on the HUD background",
+    "CELLPADDING_Y_LABEL": "Cell Padding Y",
+    "CELLPADDING_Y_DESCRIPTION": "Adjust vertical padding between HUD items",
+    "CELLPADDING_X_LABEL": "Window Padding X",
+    "CELLPADDING_X_DESCRIPTION": "Left and right padding of the HUD window in pixels",
+    "HORIZONTAL_SEPARATOR_COLOR_LABEL": "Separator Color",
+    "HORIZONTAL_SEPARATOR_COLOR_DESCRIPTION": "Set the color of the pipe separator in horizontal mode"
 }

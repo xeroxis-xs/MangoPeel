@@ -200,6 +200,12 @@ export class ParamSetting {
           case ParamName.text_outline_thickness:
             config += `${ParamName.text_outline_thickness}=0\n`;
             break;
+          case ParamName.horizontal_separator:
+            config += `${ParamName.horizontal_separator}=0\n`;
+            break;
+          case ParamName.horizontal_stretch:
+            config += `${ParamName.horizontal_stretch}=0\n`;
+            break;
         }
       }
     }
